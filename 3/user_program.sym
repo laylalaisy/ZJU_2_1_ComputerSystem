@@ -1,0 +1,23 @@
+//Symbol Name		Page Address
+//----------------	------------
+//	A                       3026
+//	B                       3027
+//	COUNT1                  30F3
+//	DDR                     30F0
+//	DELAY                   3021
+//	DSR                     30EF
+//	IE                      3028
+//	KBDR                    30F2
+//	KBSR                    30F1
+//	LOOP                    301C
+//	O11                     3029
+//	O12                     305B
+//	O21                     3089
+//	O22                     30BA
+//	OUT11                   3006
+//	OUT12                   300B
+//	OUT21                   3010
+//	OUT22                   3015
+//	OUTPUT                  301A
+//	REP                     3022
+//	STACK                   3025

@@ -1,0 +1,37 @@
+;Main Idea: usage of bit mask 
+0011 0000 0000 0000	;x3000: start the program at location x30000
+
+;Initialization
+0101 001 001 1 00000	;x3000:clear R1; to be used for the original number
+0101 010 010 1 00000	;x3001:clear R2; to be used for the bit mask
+0101 011 011 1 00000	;x3002:clear R3; to be used for a time counter
+0101 100 100 1 00000	;x3003:clear R4; to be used as a temporary register for R1 AND R2
+0101 101 101 1 00000	;x3004:clear R5; to be used as a temporary register for the 2's complement of the value of R4
+0101 110 110 1 00000	;x3005:clear R6; to store the ASCII of 'Y' or 'N' 
+
+0010 001 011111001	;x3006:R1<-x3100; load the original number from x3100
+0001 010 010 1 00111	;x3007:ADD R2, R2; 0111, load R2 with 0000 0000 0000 0111 as the start of the bis mask
+0001 011 011 1 01110	;x3008:ADD R3, R3; 1101, load R3 with #14, the number of largest times to judge the original number
+
+;Judge Function: use algorithm to process datum, R2 + (- (R1 AND R2))
+0101 100 001 0 00 010	;x3009:AND R4, R1, R2
+1001 101 100 111111	;x300A:NOT R5, R4
+0001 101 101 1 00001	;x300B:ADD R5, R5, #1; have the 2's complement of (R1 AND R2)
+0001 100 010 0 00 101	;x300C:ADD R4, R2, R5; R2 + (- (R1 AND R2))
+0000 010 000000001	;x300D:BRz, to x300F; R1 at least have 3 consecutive 1 as the value of R2
+0000 101 000000011	;x300E:BRnp, to x3012; R1 does not have the same consecutive a as the value of R2
+0010 110 000001001	;x300F:load R6 with the value from x3019 which is the ASCII value of 'Y'
+0011 110 011110000	;x3010:store x3101 will the ascii value of 'Y' from R6
+1111 0000 00100101	;x3011:halt
+0001 010 010 0 00 010	;x3012:ADD R2, R2, R2; double the value of the bit mask 
+0001 011 011 1 11111	;x3013:ADD R3, R3, #-1; subtract the time counter
+0000 101 111110100 	;x3014:BRnp, to x3009;  execute the loop
+0000 010 000000000	;x3015:BRz, to x3016; end the loop and there is no three consecutive 1s in the original number
+0010 110 000000011	;x3016:load R6 with the value from x301A which is the ASCII value of 'N'
+0011 110 011101001	;x3017:x3101 will get the ascii value of 'N'
+1111 0000 00100101	;x3018:halt
+0000 0000 0101 1001	;x3019:ASCII Y
+0000 0000 0100 1110	;x301A:ASCII N
+
+
+
